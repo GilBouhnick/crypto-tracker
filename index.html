@@ -51,17 +51,42 @@
             border-bottom: 1px solid #eee;
         }
 
-        .crypto-table th {
+        .crypto-table thead th {
             background-color: #f8f9fa;
             font-weight: 600;
             color: #666;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        /* Only first column needs special sticky treatment */
+        .crypto-table th:first-child,
+        .crypto-table td:first-child {
+            position: -webkit-sticky !important;
+            position: sticky !important;
+            left: 0px;
+            z-index: 3;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+        }
+
+        .crypto-table thead th:first-child {
+            z-index: 4;
+        }
+
+        .crypto-table tbody td:first-child {
+            background: white;
+        }
+
+        .crypto-table tbody tr:hover td:first-child {
+            background: #f8f9fa;
         }
 
         .name-cell {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            min-width: 160px;
         }
 
         .name-cell img {
@@ -126,9 +151,21 @@
             color: #16c784;
         }
 
+        .signal.very-bullish {
+            background-color: rgba(22, 199, 132, 0.2);
+            color: #16c784;
+            font-weight: 700;
+        }
+
         .signal.bearish {
             background-color: rgba(234, 57, 67, 0.1);
             color: #ea3943;
+        }
+
+        .signal.very-bearish {
+            background-color: rgba(234, 57, 67, 0.2);
+            color: #ea3943;
+            font-weight: 700;
         }
 
         .signal.neutral {
@@ -260,7 +297,7 @@
 
         .tooltip-section {
             border-bottom: 1px solid #eee;
-            padding: 10px 0;
+            padding: 10px 10px;
         }
 
         .tooltip-section:last-child {
@@ -315,64 +352,12 @@
             display: block;
         }
 
-        /* Make first column sticky */
-        .crypto-table th:first-child,
-        .crypto-table td:first-child {
-            position: -webkit-sticky !important;
-            position: sticky !important;
-            left: 10px;
-        }
-
-        .crypto-table thead th:first-child {
-            background: #f8f9fa;
-            z-index: 3;
-        }
-
-        .crypto-table tbody td:first-child {
-            background: white;
-            z-index: 1;
-        }
-
-        /* Fix table header scrolling */
-        .crypto-table thead {
-            position: sticky;
-            top: 0;
-            z-index: 4;
-            background: #f8f9fa;
-        }
-
-        .crypto-table thead th {
-            position: sticky;
-            top: 0;
-            background: #f8f9fa;
-            z-index: 4;
-            border-bottom: 1px solid #eee;
-        }
-
-        /* Ensure first column stays fixed while scrolling */
-        .crypto-table th:first-child,
-        .crypto-table td:first-child {
-            position: sticky;
-            left: 0;
-            background: #f8f9fa;
-            z-index: 5;
-            border-right: 1px solid #eee;
-            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
-        }
-
-        /* Higher z-index for the first header cell */
-        .crypto-table thead th:first-child {
-            z-index: 6;
-            background: #f8f9fa;
-        }
-
-        /* Ensure proper background for cells */
-        .crypto-table tbody td:first-child {
-            background: white;
-        }
-
-        .crypto-table tbody tr:hover td:first-child {
-            background: #f8f9fa;
+        /* Remove all styles related to second column stickiness */
+        .crypto-table th:nth-child(2),
+        .crypto-table td:nth-child(2) {
+            position: static;
+            left: auto;
+            background: inherit;
         }
 
         /* Add horizontal padding to prevent content from touching the edges */
@@ -431,7 +416,7 @@
             }
 
             .tooltip-section {
-                padding: 10px;
+                padding: 10px 10px;
                 margin: -5px;
                 border-radius: 4px;
             }
@@ -452,7 +437,6 @@
             }
 
             .name-cell {
-                min-width: 120px;
                 gap: 8px;
             }
 
@@ -674,6 +658,7 @@
                 <table class="crypto-table">
                     <thead>
                         <tr>
+                            <th>Token</th>
                             <th>Name</th>
                             <th>Price</th>
                             <th>1h</th>
@@ -691,8 +676,8 @@
                         <tr data-symbol="BTCUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin">
-                                Bitcoin <span class="symbol">BTC</span>
                             </td>
+                            <td>Bitcoin</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -733,8 +718,8 @@
                         <tr data-symbol="ETHUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum">
-                                Ethereum <span class="symbol">ETH</span>
                             </td>
+                            <td>Ethereum</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -775,8 +760,8 @@
                         <tr data-symbol="BNBUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB">
-                                BNB <span class="symbol">BNB</span>
                             </td>
+                            <td>BNB</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -817,8 +802,8 @@
                         <tr data-symbol="SOLUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana">
-                                Solana <span class="symbol">SOL</span>
                             </td>
+                            <td>Solana</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -859,8 +844,8 @@
                         <tr data-symbol="XRPUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png" alt="XRP">
-                                XRP <span class="symbol">XRP</span>
                             </td>
+                            <td>XRP</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -901,8 +886,8 @@
                         <tr data-symbol="ADAUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/cardano-ada-logo.png" alt="Cardano">
-                                Cardano <span class="symbol">ADA</span>
                             </td>
+                            <td>Cardano</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -943,8 +928,8 @@
                         <tr data-symbol="DOGEUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" alt="Dogecoin">
-                                Dogecoin <span class="symbol">DOGE</span>
                             </td>
+                            <td>Dogecoin</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -985,8 +970,8 @@
                         <tr data-symbol="AVAXUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/avalanche-avax-logo.png" alt="Avalanche">
-                                Avalanche <span class="symbol">AVAX</span>
                             </td>
+                            <td>Avalanche</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1027,8 +1012,8 @@
                         <tr data-symbol="TRXUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="TRON">
-                                TRON <span class="symbol">TRX</span>
                             </td>
+                            <td>TRON</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1069,8 +1054,8 @@
                         <tr data-symbol="LINKUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/chainlink-link-logo.png" alt="Chainlink">
-                                Chainlink <span class="symbol">LINK</span>
                             </td>
+                            <td>Chainlink</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1108,11 +1093,11 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr data-symbol="MATICUSDT">
+                        <tr data-symbol="POLUSDT">
                             <td class="name-cell">
-                                <img src="https://cryptologos.cc/logos/matic-network-matic-logo.png" alt="MATIC">
-                                MATIC <span class="symbol">MATIC</span>
+                                <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="Polygon">
                             </td>
+                            <td>Polygon</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1132,7 +1117,7 @@
                                 <div class="indicator-details" data-period="30d">Loading...</div>
                             </td>
                         </tr>
-                        <tr class="technical-details-row" data-symbol="MATICUSDT-details" style="display: none;">
+                        <tr class="technical-details-row" data-symbol="POLUSDT-details" style="display: none;">
                             <td colspan="11">
                                 <div class="technical-details-container">
                                     <div class="technical-period" data-period="24h">
@@ -1152,9 +1137,9 @@
                         </tr>
                         <tr data-symbol="DOTUSDT">
                             <td class="name-cell">
-                                <img src="https://cryptologos.cc/logos/polkadot-dot-logo.png" alt="DOT">
-                                DOT <span class="symbol">DOT</span>
+                                <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/6636.png" alt="DOT">
                             </td>
+                            <td>Polkadot</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1195,8 +1180,8 @@
                         <tr data-symbol="ATOMUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/cosmos-atom-logo.png" alt="ATOM">
-                                ATOM <span class="symbol">ATOM</span>
                             </td>
+                            <td>Cosmos</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1237,8 +1222,8 @@
                         <tr data-symbol="LTCUSDT">
                             <td class="name-cell">
                                 <img src="https://cryptologos.cc/logos/litecoin-ltc-logo.png" alt="LTC">
-                                LTC <span class="symbol">LTC</span>
                             </td>
+                            <td>Litecoin</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1276,11 +1261,11 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr data-symbol="ICPUSDT">
+                        <tr data-symbol="HBARUSDT">
                             <td class="name-cell">
-                                <img src="https://cryptologos.cc/logos/internet-computer-icp-logo.png" alt="ICP">
-                                ICP <span class="symbol">ICP</span>
+                                <img src="https://cryptologos.cc/logos/hedera-hbar-logo.png" alt="HBAR">
                             </td>
+                            <td>Hedera</td>
                             <td class="price">Loading...</td>
                             <td class="change-1h">-</td>
                             <td class="change-24h">-</td>
@@ -1300,7 +1285,7 @@
                                 <div class="indicator-details" data-period="30d">Loading...</div>
                             </td>
                         </tr>
-                        <tr class="technical-details-row" data-symbol="ICPUSDT-details" style="display: none;">
+                        <tr class="technical-details-row" data-symbol="HBARUSDT-details" style="display: none;">
                             <td colspan="11">
                                 <div class="technical-details-container">
                                     <div class="technical-period" data-period="24h">
@@ -1318,7 +1303,6 @@
                                 </div>
                             </td>
                         </tr>
-                        <!-- Add similar rows for other tokens -->
                     </tbody>
                 </table>
             </div>
@@ -1336,8 +1320,8 @@
     <script>
         const symbols = [
             'BTCUSDT', 'ETHUSDT', 'BNBUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT',
-            'DOGEUSDT', 'AVAXUSDT', 'TRXUSDT', 'LINKUSDT', 'MATICUSDT', 'DOTUSDT',
-            'ATOMUSDT', 'LTCUSDT', 'ICPUSDT'
+            'DOGEUSDT', 'AVAXUSDT', 'TRXUSDT', 'LINKUSDT', 'POLUSDT', 'DOTUSDT',
+            'ATOMUSDT', 'LTCUSDT', 'HBARUSDT'
         ];
 
         // Fetch current price and update the table
@@ -1681,8 +1665,12 @@
                 signals.bb === 'BEARISH' ? 1 : 0
             ].reduce((a, b) => a + b, 0);
 
-            // Determine overall signal
-            if (signals.bullishCount > signals.bearishCount) {
+            // Determine overall signal with new logic
+            if (signals.bullishCount >= 4 && signals.bearishCount === 0) {
+                signals.overall = 'VERY BULLISH';
+            } else if (signals.bearishCount >= 4 && signals.bullishCount === 0) {
+                signals.overall = 'VERY BEARISH';
+            } else if (signals.bullishCount > signals.bearishCount) {
                 signals.overall = 'BULLISH';
             } else if (signals.bearishCount > signals.bullishCount) {
                 signals.overall = 'BEARISH';
@@ -1691,7 +1679,8 @@
             // Update the signal in the main row
             const detailsDiv = row.querySelector(`.indicator-details[data-period="${period}"]`);
             if (detailsDiv) {
-                detailsDiv.innerHTML = `<span class="signal ${signals.overall.toLowerCase()}">${signals.overall}</span>`;
+                const signalClass = signals.overall.toLowerCase().replace(' ', '-');
+                detailsDiv.innerHTML = `<span class="signal ${signalClass}">${signals.overall}</span>`;
                 detailsDiv.dataset.technicalDetails = JSON.stringify({
                     symbol,
                     period,
@@ -1930,24 +1919,26 @@
             if (!cell) return '';
             
             // For price column, remove currency symbol and parse as number
-            if (idx === 1) {
+            if (idx === 2) {
                 return parseFloat(cell.textContent.replace(/[$,]/g, '')) || 0;
             }
             // For percentage columns, remove % and parse as number
-            if (idx >= 2 && idx <= 6) {
+            if (idx >= 3 && idx <= 7) {
                 return parseFloat(cell.textContent.replace('%', '')) || 0;
             }
             // For technical analysis columns (1h TA, Short, Mid, Long)
-            if (idx >= 7 && idx <= 10) {
+            if (idx >= 8 && idx <= 11) {
                 const signalElement = cell.querySelector('.signal');
                 if (!signalElement) return -1;
                 
                 const signal = signalElement.textContent.trim();
-                // Define order: BULLISH > NEUTRAL > BEARISH > Loading...
+                // Define order: VERY BULLISH > BULLISH > NEUTRAL > BEARISH > VERY BEARISH
                 const signalOrder = {
-                    'BULLISH': 3,
-                    'NEUTRAL': 2,
-                    'BEARISH': 1,
+                    'VERY BULLISH': 5,
+                    'BULLISH': 4,
+                    'NEUTRAL': 3,
+                    'BEARISH': 2,
+                    'VERY BEARISH': 1,
                     'Loading...': 0
                 };
                 return signalOrder[signal] || 0;
